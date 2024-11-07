@@ -1,64 +1,109 @@
 import { router } from 'expo-router';
 import React, { useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Animated, ImageBackground } from 'react-native';
 
 const WelcomeScreen = () => {
+  const fadeAnim = new Animated.Value(0);  // Initial opacity is 0
 
-  useEffect(()=>{
-    setTimeout(() => {
-      router.push('/(drawer)/(tabs)/')
-    }, 1000);
-  }, [])
+  useEffect(() => {
+    // Fade-in effect when the screen loads
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 2000, // 2 seconds for fade-in effect
+      useNativeDriver: true,
+    }).start();
+
+    // setTimeout(() => {
+    //   router.push('/(drawer)/(tabs)/');
+    // }, 3000); // Delay the transition for 3 seconds to let the animation complete
+  }, []);
 
   return (
-    <View style={styles.container} >
-      <Image 
-        style={styles.logo}
-        source={{ uri: 'https://media.istockphoto.com/id/1081786788/vector/drop.jpg?s=612x612&w=0&k=20&c=4Xqh6-K94vU9uAnYBNTu8JWb2CoWi37JB4gKfvdSIb0=' }}
-      />
-      <Text style={styles.title}>Welcome to LifeSavers</Text>
-      <Text style={styles.subtitle}>Donate Blood, Save Lives</Text>
-      
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={() => router.push('/(drawer)/(tabs)/')} // Replace with your actual navigation target
-      >
-        <Text style={styles.buttonText}>Get Started</Text>
-      </TouchableOpacity>
-    </View>
+    <ImageBackground
+      source={{ uri: 'https://example.com/sports-background.gif' }} // Replace with your actual GIF URL
+      style={styles.container}
+      resizeMode="cover"
+    >
+      <View style={styles.overlay}>
+        {/* Animated Logo */}
+        <Animated.Image
+          style={[styles.logo, { opacity: fadeAnim }]}
+          source={{ uri: 'https://example.com/sports-logo.png' }} // Replace with your actual logo
+        />
+
+        {/* Main title */}
+        <Animated.Text style={[styles.title, { opacity: fadeAnim }]}>
+          Welcome to Sports Hub
+        </Animated.Text>
+
+        {/* Subtitle */}
+        <Animated.Text style={[styles.subtitle, { opacity: fadeAnim }]}>
+          Buy, Sell & Trade Sports Gear
+        </Animated.Text>
+
+        {/* Action Button */}
+        <Animated.View style={{ opacity: fadeAnim }}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => router.push('/(drawer)/(tabs)/')}
+          >
+            <Text style={styles.buttonText}>Get Started</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
+    position: 'relative',
+  },
+  overlay: {
+    // This is an overlay to darken the background image
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Semi-transparent dark overlay
+    padding: 20,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   logo: {
-    width: 120,
-    height: 120,
-    marginBottom: 20,
+    width: 180,
+    height: 180,
+    marginBottom: 30,
+    borderRadius: 15,
   },
   title: {
-    fontSize: 28,
+    fontSize: 34,
     fontWeight: 'bold',
-    color: '#d32f2f', // Blood red color
+    color: '#fff', // White text for contrast
     marginBottom: 10,
+    textAlign: 'center',
   },
   subtitle: {
-    fontSize: 16,
-    color: '#757575', // Subdued color for secondary text
+    fontSize: 18,
+    color: '#fff', // White text for subtitle
+    marginBottom: 50,
     textAlign: 'center',
-    marginBottom: 40,
   },
   button: {
-    backgroundColor: '#d32f2f', // Blood red color
+    backgroundColor: '#E76F51', // Vibrant button color
     paddingVertical: 15,
-    paddingHorizontal: 40,
+    paddingHorizontal: 60,
     borderRadius: 25,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 5,
   },
   buttonText: {
     color: '#fff',
