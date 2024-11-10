@@ -55,7 +55,7 @@ const imge1 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgLV-GeLF5M
       
       {profile.map((item,index) => {
           return(
-      <View style={styles.imageContainer}>
+      <View style={styles.imageContainer} key={index}>
         <Image
           source={{ uri: item.img }} 
           style={styles.profileImage}
