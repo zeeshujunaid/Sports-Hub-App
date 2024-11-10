@@ -3,196 +3,218 @@ import { addDoc, collection } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import { db } from '~/utils/firebase';
-
+// import imge from ""
 export default function BloodDonateScreen() {
   // State variables to store input data
-  const [name, setName] = useState('');
-  const [bloodGroup, setBloodGroup] = useState('');
-  const [age, setAge] = useState('');
-  const [lastDonation, setLastDonation] = useState('');
+  // const [name, setName] = useState('');
+  // const [bloodGroup, setBloodGroup] = useState('');
+  // const [age, setAge] = useState('');
+  // const [lastDonation, setLastDonation] = useState('');
+
+const imge = "https://i.pinimg.com/originals/48/19/e7/4819e7f441969c82703447ecd2107cbe.png"
+const imge1 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgLV-GeLF5MTTl1BUD6Oy4EOhIXQsbtRdrxw&s"
+  const ads = [
+    {
+      title : "zain" , img: imge 
+    },
+    {
+      title : "fakhar" , img: imge 
+    },
+    {
+      title : "fahad" , img: imge 
+    }
+  ]
+  const profile = [
+    {
+      name : "zain" ,
+      img: imge1 ,
+      email: "zain@gmail.com"
+    },
+  ]
 
   // Handle form submission
-  const handleDonateNow = () => {
-    if (name && bloodGroup && age && lastDonation) {
-      addDoc(collection(db, 'donors'), {
-        name,
-        bloodGroup,
-        age,
-        lastDonation,
-        timestamp: new Date(),
-      })
-      router.push('/(tabs)')
-      Alert.alert('Thank You!', `Thank you, ${name}, for your interest in donating blood!`);
-      // Here, you could add logic to save or send the data to a backend or Firebase.
-    } else {
-      Alert.alert('Incomplete Information', 'Please fill out all fields before submitting.');
-    }
-  };
+  // const handleDonateNow = () => {
+  //   if (name && bloodGroup && age && lastDonation) {
+  //     addDoc(collection(db, 'donors'), {
+  //       name,
+  //       bloodGroup,
+  //       age,
+  //       lastDonation,
+  //       timestamp: new Date(),
+  //     })
+  //     router.push('/(tabs)')
+  //     Alert.alert('Thank You!', `Thank you, ${name}, for your interest in donating blood!`);
+  //     // Here, you could add logic to save or send the data to a backend or Firebase.
+  //   } else {
+  //     Alert.alert('Incomplete Information', 'Please fill out all fields before submitting.');
+  //   }
+  // };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* Header Section */}
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Donate Blood</Text>
-        <Text style={styles.subHeaderText}>Save a Life Today</Text>
+    <ScrollView style={styles.container}>
+      
+      {profile.map((item,index) => {
+          return(
+      <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: item.img }} 
+          style={styles.profileImage}
+        />
+      </View>
+  )
+})}
+
+      {profile.map((item,index) => {
+          return(
+      <View style={styles.header} key={index}>
+
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.username}>{item.email}</Text>
+      </View>
+          )
+        })}
+
+    
+      {/* <View style={styles.bioContainer}>
+        <Text style={styles.bioText}>
+          Passionate seller in electronics and gadgets. Bringing you the best deals in town!
+        </Text>
+      </View> */}
+
+   
+      <View style={styles.actionsContainer}>
+        <TouchableOpacity style={styles.editProfileButton}>
+          <Text style={styles.editProfileButtonText}>Edit Profile</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.logoutButton}>
+          <Text style={styles.logoutButtonText}>Logout</Text>
+        </TouchableOpacity>
       </View>
 
-      {/* Donation Info Section */}
-      <View style={styles.infoCard}>
-        <Text style={styles.infoTitle}>Your Information</Text>
+  
+      <View style={styles.listingsContainer}>
+        <Text style={styles.listingsTitle}>Your Ads</Text>
 
-        {/* Name Input */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Name:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your name"
-            placeholderTextColor="#B0BEC5"
-            value={name}
-            onChangeText={setName}
-          />
+        {ads.map((ad,index) => {
+            return(
+              
+              <View key={index}>     
+        <View style={styles.listingItems}>
+        <Image
+           source={{
+            uri:ad.img
+          }} 
+          style={{width: 120 , height: 100}}
+        />
+        <Text style={{}}>{ad.title}</Text>
         </View>
-
-        {/* Blood Group Input */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Blood Group:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your blood group (e.g., O+)"
-            placeholderTextColor="#B0BEC5"
-            value={bloodGroup}
-            onChangeText={setBloodGroup}
-          />
+        <TouchableOpacity style={styles.logoutButton}>
+          <Text style={styles.logoutButtonText}>Delete Ad</Text>
+        </TouchableOpacity>
         </View>
-
-        {/* Age Input */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Age:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your age"
-            placeholderTextColor="#B0BEC5"
-            keyboardType="numeric"
-            value={age}
-            onChangeText={setAge}
-          />
-        </View>
-
-        {/* Last Donation Date Input */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Last Donation Date:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="e.g., 3 months ago"
-            placeholderTextColor="#B0BEC5"
-            value={lastDonation}
-            onChangeText={setLastDonation}
-          />
-        </View>
+          )
+    })}
       </View>
-
-      {/* Call to Action Button */}
-      <TouchableOpacity style={styles.donateButton} onPress={handleDonateNow}>
-        <Text style={styles.buttonText}>Donate Now</Text>
-      </TouchableOpacity>
-
-      {/* Image or Icon Section */}
-      <Image
-        source={{ uri: 'https://example.com/blood_donate_image.png' }}
-        style={styles.image}
-      />
-
-      {/* Information Section */}
-      <Text style={styles.infoText}>
-        By donating blood, you can help save up to three lives. Please ensure you are in good health and meet the donation eligibility criteria.
-      </Text>
+   
+      <View style={{height:100}}>
+        <Text></Text>
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: '#FFF5F5',
-    padding: 16,
+    flex: 1,
+    backgroundColor: '#f3f4f6',
+    paddingBottom: 100
+  },
+  imageContainer: {
     alignItems: 'center',
+    paddingTop: 30,
+    // paddingBottom: 40,
+  },
+  profileImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 3,
+    borderColor: '#d1d5db', 
   },
   header: {
     alignItems: 'center',
-    backgroundColor: '#D32F2F',
-    padding: 20,
-    borderRadius: 10,
-    width: '100%',
-    marginBottom: 20,
+    paddingVertical: 10,
   },
-  headerText: {
-    color: '#FFFFFF',
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-  subHeaderText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontStyle: 'italic',
+  name: {
     marginTop: 5,
-  },
-  infoCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    padding: 16,
-    width: '100%',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
-    marginBottom: 20,
-  },
-  infoTitle: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#C62828',
-    marginBottom: 10,
+    color: '#1f2937',
   },
-  inputContainer: {
-    marginBottom: 12,
+  username: {
+    color: '#6b7280',
   },
-  label: {
+  bioContainer: {
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+  },
+  bioText: {
+    color: '#374151',
     fontSize: 16,
-    color: '#C62828',
-    marginBottom: 5,
+    textAlign: 'center',
   },
-  input: {
-    height: 40,
-    borderColor: '#C62828',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    color: '#424242',
-    backgroundColor: '#FFF8F8',
+  actionsContainer: {
+    paddingHorizontal: 24,
+    paddingVertical: 16,
   },
-  donateButton: {
-    backgroundColor: '#E53935',
+  editProfileButton: {
+    backgroundColor: '#3b82f6',
     paddingVertical: 12,
-    paddingHorizontal: 40,
-    borderRadius: 30,
-    marginVertical: 20,
+    borderRadius: 9999,
+    marginBottom: 8,
   },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 18,
+  editProfileButtonText: {
+    textAlign: 'center',
+    color: '#ffffff',
     fontWeight: 'bold',
+  },
+  viewListingsButton: {
+    backgroundColor: '#d1d5db',
+    paddingVertical: 12,
+    borderRadius: 9999,
+    marginBottom: 8,
+  },
+  viewListingsButtonText: {
     textAlign: 'center',
+    color: '#374151',
+    fontWeight: 'bold',
   },
-  image: {
-    width: 200,
-    height: 200,
-    resizeMode: 'contain',
-    marginVertical: 20,
+  logoutButton: {
+    backgroundColor: '#ef4444',
+    paddingVertical: 12,
+    borderRadius: 9999,
   },
-  infoText: {
-    fontSize: 16,
-    color: '#757575',
+  logoutButtonText: {
     textAlign: 'center',
-    marginVertical: 10,
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
+  listingsContainer: {
+    marginTop: 24,
+    paddingHorizontal: 24,
+  },
+  listingsTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1f2937',
+    marginBottom: 8,
+  },
+  listingItems: {
+    paddingVertical: 8,
+    display:"flex",
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"space-between"
+  },
+ 
 });
